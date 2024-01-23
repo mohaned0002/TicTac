@@ -9,5 +9,96 @@ package tictac;
  * @author moham
  */
 public class Game {
+    private char currentPlayer;
+    Board board = new Board() ; 
+       
+    public Game()
+    {   this.currentPlayer='x';
+        board.initializBoard();
+        
+    }
+    
+  
+    /**
+     * @return the currentPlayer
+     */
+    public char getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    /**
+     * @param currentPlayer the currentPlayer to set
+     */
+    public void setCurrentPlayer(char currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    
+    
+    
+    
+  public void switchPlayer()
+  {
+      
+        setCurrentPlayer((getCurrentPlayer() == 'x') ? 'o' : 'x');
+    }
+
+  
+   public char checkWinner() {
+        
+        for (int row = 0; row < 3; row++) {
+            if (board.arr[row][0] != '-' &&board.arr[row][0] ==board.arr[row][1] && board.arr[row][1] == board.arr[row][2]) {
+                return board.arr[row][0];
+            }
+        }
+
+        for (int col = 0; col < 3; col++) {
+            if (board.arr[0][col] != '-' && board.arr[0][col] ==board.arr[1][col] &&board.arr[1][col] == board.arr[2][col]) {
+                return board.arr[0][col];
+            }
+        }
+
+       
+        if (board.arr[0][0] != '-' && board.arr[0][0] == board.arr[1][1] && board.arr[1][1] == board.arr[2][2]) {
+            return board.arr[0][0];
+        }
+
+        if (board.arr[0][2] != '-' && board.arr[0][2] == board.arr[1][1] && board.arr[1][1] == board.arr[2][0]) {
+            return board.arr[0][2];
+        }
+
+       
+        return ' ';
+    }
+
+   
+
+
+
+    public boolean checkDraw()
+    { for (int row = 0; row < 3; row++) {
+        
+            for (int col = 0; col < 3; col++) {
+                if (board.arr[row][col] == '-') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+       
+    public char checkGameResult() {
+        char winner = checkWinner();
+
+        if (winner != ' ') {
+            return winner ;
+       
+        } else {
+            return 'n' ;
+        }
+    }
+    
+    
     
 }
