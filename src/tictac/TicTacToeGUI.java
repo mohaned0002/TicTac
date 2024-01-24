@@ -110,7 +110,7 @@ public class TicTacToeGUI extends JFrame {
 
     private JButton Createsnapshotrestbutton() {
         JButton button = new JButton();
-        button.setIcon(new javax.swing.ImageIcon("C:\\Users\\RH\\Documents\\NetBeansProjects\\TicTac\\src\\tictac\\rs.png"));
+        button.setIcon(new javax.swing.ImageIcon("rs.png"));
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -122,7 +122,7 @@ public class TicTacToeGUI extends JFrame {
 
     private JButton Createundobutton() {
         JButton button = new JButton();
-        button.setIcon(new javax.swing.ImageIcon("C:\\Users\\RH\\Documents\\NetBeansProjects\\TicTac\\src\\tictac\\60690.png"));
+        button.setIcon(new javax.swing.ImageIcon("60690.png"));
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -136,7 +136,7 @@ public class TicTacToeGUI extends JFrame {
 
     private JButton Createsnapshotbutton() {
         JButton button = new JButton();
-        button.setIcon(new javax.swing.ImageIcon("C:\\Users\\RH\\Documents\\NetBeansProjects\\TicTac\\src\\tictac\\snp.png"));
+        button.setIcon(new javax.swing.ImageIcon("snp.png"));
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
