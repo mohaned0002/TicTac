@@ -1,3 +1,5 @@
+
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -47,43 +49,30 @@ public class FrontGuiSingle extends JFrame {
     }
 
     public void undo() {
+
         try {
             Memento m;
-            if (!stackc.isEmpty()) {
-                m = stackc.pop();
-                setPreviousm(m);
-                buttons[m.getRow()][m.getCol()].setEnabled(true);
-                int x = m.getRow();
-                int y = m.getCol();
-                m = stack.pop();
-                setPreviousm(m);
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        String s = String.valueOf(m.getBoard().getSquare(i, j).getSymbol());
-                        if (s.contains("-")) {
-                            buttons[i][j].setText(null);
+            m = stackc.pop();
+            setPreviousm(m);
+            buttons[m.getRow()][m.getCol()].setEnabled(true);
+            int x = m.getRow();
+            int y = m.getCol();
+//            buttons[m.getRow()][m.getCol()].setText(null);
+            m = stack.pop();
+            setPreviousm(m);
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    String s = String.valueOf(m.getBoard().getSquare(i, j).getSymbol());
+                    if (s.contains("-")) {
+                        buttons[i][j].setText(null);
 
-                        } else {
-                            buttons[i][j].setText(s.toUpperCase());
-                        }
-                    }
-                }
-                buttons[x][y].setText(null);
-            } else {
-                m = stack.pop();
-                setPreviousm(m);
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        String s = String.valueOf(m.getBoard().getSquare(i, j).getSymbol());
-                        if (s.contains("-")) {
-                            buttons[i][j].setText(null);
-
-                        } else {
-                            buttons[i][j].setText(s.toUpperCase());
-                        }
+                    } else {
+                        buttons[i][j].setText(s.toUpperCase());
                     }
                 }
             }
+            buttons[x][y].setText(null);
+
             System.out.println("Memento restorted ");
         } catch (EmptyStackException e) {
 
@@ -234,13 +223,12 @@ public class FrontGuiSingle extends JFrame {
                 x = game.randomX();
                 y = game.randomY();
             } while (buttons[x][y].getText() != null && (buttons[x][y].getText().equals("X") || buttons[x][y].getText().equals("O")));
-//            stackc.push(CreateMemento(x, y));
+            stackc.push(CreateMemento(x, y));
 
             buttons[x][y].setText("O");
             buttons[x][y].setEnabled(false);
 
             game.board.fillBoardO(x, y);
-            stackc.push(CreateMemento(x, y));
             game.board.printBoard();
 
             if (game.checkWinner() != null || game.checkDraw()) {
@@ -296,3 +284,5 @@ public class FrontGuiSingle extends JFrame {
     }
 
 }
+
+
