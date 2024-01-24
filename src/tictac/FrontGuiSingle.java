@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -52,6 +53,10 @@ public class FrontGuiSingle extends JFrame {
             Memento m;
             m = stackc.pop();
             setPreviousm(m);
+            buttons[m.getRow()][m.getCol()].setEnabled(true);
+            int x = m.getRow();
+            int y = m.getCol();
+//            buttons[m.getRow()][m.getCol()].setText(null);
             m = stack.pop();
             setPreviousm(m);
             for (int i = 0; i < 3; i++) {
@@ -65,6 +70,8 @@ public class FrontGuiSingle extends JFrame {
                     }
                 }
             }
+            buttons[x][y].setText(null);
+
             System.out.println("Memento restorted ");
         } catch (EmptyStackException e) {
 
@@ -79,7 +86,7 @@ public class FrontGuiSingle extends JFrame {
         game.gameStatues = s.getGameStatues();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (!(game.board.getSquare(i, j).getSymbol() == 'X' || game.board.getSquare(i, j).getSymbol() == 'O')) {
+                if (!(game.board.getSquare(i, j).getSymbol() == 'x' || game.board.getSquare(i, j).getSymbol() == 'o')) {
                     buttons[i][j].setEnabled(true);
                 }
             }
@@ -237,8 +244,6 @@ public class FrontGuiSingle extends JFrame {
             if (result.getSymbol() == 'x' || result.getSymbol() == 'o') {
                 JOptionPane.showMessageDialog(this, "Player " + result.getSymbol() + " wins!");
                 resetGame();
-               
-
             }
         } catch (NullPointerException e) {
         }
@@ -248,25 +253,24 @@ public class FrontGuiSingle extends JFrame {
         }
     }
 
-   private void resetGame() {
-    Object[] options = {"Undo", "Restart", "Snapshot", "Exit"};
-    int choice = JOptionPane.showOptionDialog(this, "Game Over. What would you like to do?", "Game Over", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, "Exit");
+    private void resetGame() {
+        Object[] options = {"Undo", "Restart", "Snapshot", "Exit"};
+        int choice = JOptionPane.showOptionDialog(this, "Game Over. What would you like to do?", "Game Over", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, "Exit");
 
-    if (choice == JOptionPane.YES_OPTION) {
-          game.switchPlayer();
-          undo();
-       game.switchPlayer();
-    } else if (choice == JOptionPane.NO_OPTION) {
-        game.end();
-        game = getinstance();
-        resetButtons();
-    } else if (choice == options.length - 2) {  
-        restore();
-      
+        if (choice == JOptionPane.YES_OPTION) {
+            undo();
+            game.switchPlayer();
+        } else if (choice == JOptionPane.NO_OPTION) {
+            game.end();
+            game = getinstance();
+            resetButtons();
+        } else if (choice == options.length - 2) {
+            restore();
 
-    } else {
-        System.exit(0);
-    }}
+        } else {
+            System.exit(0);
+        }
+    }
 
     private void resetButtons() {
         for (int i = 0; i < 3; i++) {
@@ -277,4 +281,6 @@ public class FrontGuiSingle extends JFrame {
             }
         }
     }
+
 }
+
