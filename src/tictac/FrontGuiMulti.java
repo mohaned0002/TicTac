@@ -52,7 +52,7 @@ public class FrontGuiMulti extends JFrame {
             setPreviousm(m);
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    String s = String.valueOf(m.getBoard().getSquare(i, j));
+                    String s = String.valueOf(m.getBoard().getSquare(i, j).getSymbol());
                     if (s.contains("-")) {
                         buttons[i][j].setText(null);
                     } else {
@@ -74,7 +74,7 @@ public class FrontGuiMulti extends JFrame {
         game.gameStatues = s.getGameStatues();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (!(game.board.getSquare(i, j)=='X' ||game.board.getSquare(i, j)=='O')) {
+                if (!(game.board.getSquare(i, j).getSymbol()=='X' ||game.board.getSquare(i, j).getSymbol()=='O')) {
                     buttons[i][j].setEnabled(true);
                 }
             }
@@ -88,7 +88,7 @@ public class FrontGuiMulti extends JFrame {
             setPreviouss(s1);
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    String s = String.valueOf(s1.getBoard().getSquare(i, j));
+                    String s = String.valueOf(s1.getBoard().getSquare(i, j).getSymbol());
                     if (s.contains("-")) {
                         buttons[i][j].setText(null);
                     } else {
@@ -192,7 +192,7 @@ public class FrontGuiMulti extends JFrame {
             button.setEnabled(false);
             game.board.fillBoardX(row, col);
             game.board.printBoard();
-            if (game.checkWinner() != ' ' || game.checkDraw()) {
+            if (game.checkWinner() != null || game.checkDraw()) {
                 handleGameEnd();
             }
         } else if (game.getCurrentPlayer() == 'o') {
@@ -200,20 +200,20 @@ public class FrontGuiMulti extends JFrame {
             button.setEnabled(false);
             game.board.fillBoardO(row, col);
             game.board.printBoard();
-            if (game.checkWinner() != ' ' || game.checkDraw()) {
+            if (game.checkWinner() != null || game.checkDraw()) {
                 handleGameEnd();
             }
         }
     }
 
     private void handleGameEnd() {
-        char result = game.checkGameResult();
-        if (result == 'x' || result == 'o') {
-            JOptionPane.showMessageDialog(this, "Player " + result + " wins!");
-            resetGame();
+        GameSymbol result = game.checkGameResult();
+        if (result.getSymbol() == 'x' || result.getSymbol() == 'o') {
+            JOptionPane.showMessageDialog(this, "Player " + result.getSymbol() + " wins!");
+            //resetGame();
         } else if (game.checkDraw()) {
             JOptionPane.showMessageDialog(this, "Draw");
-            resetGame();
+            //resetGame();
         }
     }
 

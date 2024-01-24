@@ -95,35 +95,35 @@ public class Game {
     
     
 
-    public char checkWinner() {
+    public GameSymbol checkWinner() {
 
         for (int row = 0; row < 3; row++) {
-            if (board.arr[row][0] != '-' && board.arr[row][0] == board.arr[row][1] && board.arr[row][1] == board.arr[row][2]) {
+            if (board.arr[row][0].getSymbol() != '-' && board.arr[row][0] == board.arr[row][1] && board.arr[row][1] == board.arr[row][2]) {
                 return board.arr[row][0];
             }
         }
 
         for (int col = 0; col < 3; col++) {
-            if (board.arr[0][col] != '-' && board.arr[0][col] == board.arr[1][col] && board.arr[1][col] == board.arr[2][col]) {
+            if (board.arr[0][col].getSymbol() != '-' && board.arr[0][col] == board.arr[1][col] && board.arr[1][col] == board.arr[2][col]) {
                 return board.arr[0][col];
             }
         }
 
-        if (board.arr[0][0] != '-' && board.arr[0][0] == board.arr[1][1] && board.arr[1][1] == board.arr[2][2]) {
+        if (board.arr[0][0].getSymbol() != '-' && board.arr[0][0] == board.arr[1][1] && board.arr[1][1] == board.arr[2][2]) {
             return board.arr[0][0];
         }
 
-        if (board.arr[0][2] != '-' && board.arr[0][2] == board.arr[1][1] && board.arr[1][1] == board.arr[2][0]) {
+        if (board.arr[0][2].getSymbol() != '-' && board.arr[0][2] == board.arr[1][1] && board.arr[1][1] == board.arr[2][0]) {
             return board.arr[0][2];
         }
-        return ' ';
+        return null;
     }
 
     public boolean checkDraw() {
         for (int row = 0; row < 3; row++) {
 
             for (int col = 0; col < 3; col++) {
-                if (board.arr[row][col] == '-') {
+                if (board.arr[row][col].getSymbol() == '-') {
                     return false;
                 }
             }
@@ -132,20 +132,20 @@ public class Game {
         return true;
     }
 
-    public char checkGameResult() {
-        char winner = checkWinner();
+    public GameSymbol checkGameResult() {
+        GameSymbol winner = checkWinner();
 
-        if (winner != ' ') {
+        if (winner.getSymbol() != ' ') {
 
-            if (winner == 'x') {
+            if (winner.getSymbol() == 'x') {
                 gameStatues = GameStatues.XWON;
-            } else if (winner == 'o') {
+            } else if (winner.getSymbol() == 'o') {
                 gameStatues = GameStatues.OWON;
             }
             return winner;
 
         } else {
-            return 'n';
+            return null;
         }
     }
 
