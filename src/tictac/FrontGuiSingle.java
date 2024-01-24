@@ -52,7 +52,7 @@ public class FrontGuiSingle extends JFrame {
             setPreviousm(m);
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    String s = String.valueOf(m.getBoard().getSquare(i, j));
+                    String s = String.valueOf(m.getBoard().getSquare(i, j).getSymbol());
                     if (s.contains("-")) {
                         buttons[i][j].setText(null);
                         
@@ -75,7 +75,7 @@ public class FrontGuiSingle extends JFrame {
         game.gameStatues = s.getGameStatues();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (!(game.board.getSquare(i, j)=='X' ||game.board.getSquare(i, j)=='O')) {
+                if (!(game.board.getSquare(i, j).getSymbol()=='X' ||game.board.getSquare(i, j).getSymbol()=='O')) {
                     buttons[i][j].setEnabled(true);
                 }
             }
@@ -89,7 +89,7 @@ public class FrontGuiSingle extends JFrame {
             setPreviouss(s1);
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    String s = String.valueOf(s1.getBoard().getSquare(i, j));
+                    String s = String.valueOf(s1.getBoard().getSquare(i, j).getSymbol());
                     if (s.contains("-")) {
                         buttons[i][j].setText(null);
                         
@@ -201,7 +201,7 @@ public class FrontGuiSingle extends JFrame {
             button.setEnabled(false);
             game.board.fillBoardX(row, col);
             game.board.printBoard();
-            if (game.checkWinner() != ' ' || game.checkDraw()) {
+            if (game.checkWinner() != null || game.checkDraw()) {
                 handleGameEnd();
             }
         }
@@ -224,7 +224,7 @@ public class FrontGuiSingle extends JFrame {
         game.board.fillBoardO(x, y);
         game.board.printBoard();
 
-        if (game.checkWinner() != ' ' || game.checkDraw()) {
+        if (game.checkWinner() != null || game.checkDraw()) {
             handleGameEnd();
         }
 
@@ -239,9 +239,9 @@ public class FrontGuiSingle extends JFrame {
     
 
     private void handleGameEnd() {
-        char result = game.checkGameResult();
-        if (result == 'x' || result == 'o') {
-            JOptionPane.showMessageDialog(this, "Player " + result + " wins!");
+        GameSymbol result = game.checkGameResult();
+        if (result.getSymbol() == 'x' || result.getSymbol() == 'o') {
+            JOptionPane.showMessageDialog(this, "Player " + result.getSymbol() + " wins!");
             resetGame();
         } else if (game.checkDraw()) {
             JOptionPane.showMessageDialog(this, "Draw");
@@ -250,8 +250,8 @@ public class FrontGuiSingle extends JFrame {
     }
 
    private void resetGame() {
-    Object[] options = {"Undo", "Restart", "Exit"};
-   int choice = JOptionPane.showOptionDialog(this, "Game Over. What would you like to do?", "Game Over", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Undo", "Restart", "Exit"}, "Exit");
+    Object[] options = {"Undo", "Restart", "Snapshot", "Exit"};
+    int choice = JOptionPane.showOptionDialog(this, "Game Over. What would you like to do?", "Game Over", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, "Exit");
 
     if (choice == JOptionPane.YES_OPTION) {
         undo();
@@ -259,10 +259,15 @@ public class FrontGuiSingle extends JFrame {
         game.end();
         game = getinstance();
         resetButtons();
+    } else if (choice == options.length - 2) {  
+        restore();
+       
+
     } else {
         System.exit(0);
     }
 }
+
 
     private void resetButtons() {
         for (int i = 0; i < 3; i++) {
