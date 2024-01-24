@@ -26,14 +26,19 @@ public class TicTacToeGUI extends JFrame {
     private JButton snapshotbutton;
     private JButton snapshotrestbutton;
     Stack<Memento> stack = new Stack<Memento>();
-    Stack<Memento> spStack = new Stack<Memento>();
+    Stack<Snapshot> spStack = new Stack<Snapshot>();
 
-    public Memento CreateMemento(int x,int y) {
+    public Memento CreateMemento(int x, int y) {
         System.out.println("Memento Created");
-        return new Memento(new Board(game.board), game.gameStatues, game.currentPlayer,x,y);
+        return new Memento(new Board(game.board), game.gameStatues, game.currentPlayer, x, y);
     }
 
-    public void setPrevious(Memento m) {
+    public Snapshot Createsnapshot() {
+        System.out.println("Memento Created");
+        return new Snapshot(new Board(game.board), game.currentPlayer, game.gameStatues);
+    }
+
+    public void setPreviousm(Memento m) {
         game.board = m.getBoard();
         game.currentPlayer = m.getCurrentplayer();
         game.gameStatues = m.getGameStatues();
@@ -44,14 +49,14 @@ public class TicTacToeGUI extends JFrame {
 
         try {
             Memento m = stack.pop();
-            setPrevious(m);
+            setPreviousm(m);
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     String s = String.valueOf(m.getBoard().getSquare(i, j));
                     if (s.contains("-")) {
                         buttons[i][j].setText(null);
                     } else {
-                        buttons[i][j].setText(s);
+                        buttons[i][j].setText(s.toUpperCase());
                     }
                 }
             }
@@ -61,17 +66,33 @@ public class TicTacToeGUI extends JFrame {
         }
 
     }
-    public void restore(){
-                try {
-            Memento m = spStack.pop();
-            setPrevious(m);
+
+    public void setPreviouss(Snapshot s) {
+
+        game.board = s.getBoard();
+        game.currentPlayer = s.getCurrentplayer();
+        game.gameStatues = s.getGameStatues();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (!(game.board.getSquare(i, j)=='X' ||game.board.getSquare(i, j)=='O')) {
+                    buttons[i][j].setEnabled(true);
+                }
+            }
+        }
+
+    }
+
+    public void restore() {
+        try {
+            Snapshot s1 = spStack.pop();
+            setPreviouss(s1);
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    String s = String.valueOf(m.getBoard().getSquare(i, j));
+                    String s = String.valueOf(s1.getBoard().getSquare(i, j));
                     if (s.contains("-")) {
                         buttons[i][j].setText(null);
                     } else {
-                        buttons[i][j].setText(s);
+                        buttons[i][j].setText(s.toUpperCase());
                     }
                 }
             }
@@ -79,7 +100,7 @@ public class TicTacToeGUI extends JFrame {
         } catch (EmptyStackException e) {
 
         }
-        
+
     }
 
     public TicTacToeGUI() {
@@ -140,7 +161,7 @@ public class TicTacToeGUI extends JFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //spStack.push(CreateMemento());
+                spStack.push(Createsnapshot());
 
             }
         });
@@ -154,7 +175,7 @@ public class TicTacToeGUI extends JFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                stack.push(CreateMemento(row,col));
+                stack.push(CreateMemento(row, col));
                 handleButtonClick(button, row, col);
                 System.out.println(game.getCurrentPlayer());
                 game.switchPlayer();
