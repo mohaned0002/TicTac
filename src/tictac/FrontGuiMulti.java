@@ -229,14 +229,13 @@ public class FrontGuiMulti extends JFrame {
         resetButtons();
     } else if (choice == options.length - 2) {  
         restore();
-       
-
+     
     } else {
         System.exit(0);
     }
 }
 
-
+   
     private void resetButtons() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
