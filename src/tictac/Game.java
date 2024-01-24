@@ -4,7 +4,10 @@
  */
 package tictac;
 
+import static java.lang.Math.random;
+import static java.lang.StrictMath.random;
 import java.util.EmptyStackException;
+import java.util.Random;
 import java.util.Stack;
 
 /**
@@ -75,6 +78,22 @@ public class Game {
 
         setCurrentPlayer((getCurrentPlayer() == 'x') ? 'o' : 'x');
     }
+    public  int randomX() {
+        Random random = new Random();
+        int randomNumberX = random.nextInt(3);
+        return randomNumberX;
+    }
+    
+    
+    public int randomY() {
+        Random random = new Random();
+        int randomNumberY = random.nextInt(3);
+        return randomNumberY;
+    }
+    
+    
+    
+    
 
     public GameSymbol checkWinner() {
 

@@ -18,7 +18,7 @@ import java.util.EmptyStackException;
 import java.util.Stack;
 import static tictac.Game.getinstance;
 
-public class TicTacToeGUI extends JFrame {
+public class FrontGuiSingle extends JFrame {
 
     private Game game;
     private JButton[][] buttons;
@@ -55,6 +55,7 @@ public class TicTacToeGUI extends JFrame {
                     String s = String.valueOf(m.getBoard().getSquare(i, j).getSymbol());
                     if (s.contains("-")) {
                         buttons[i][j].setText(null);
+                        
                     } else {
                         buttons[i][j].setText(s.toUpperCase());
                     }
@@ -91,6 +92,7 @@ public class TicTacToeGUI extends JFrame {
                     String s = String.valueOf(s1.getBoard().getSquare(i, j).getSymbol());
                     if (s.contains("-")) {
                         buttons[i][j].setText(null);
+                        
                     } else {
                         buttons[i][j].setText(s.toUpperCase());
                     }
@@ -103,7 +105,8 @@ public class TicTacToeGUI extends JFrame {
 
     }
 
-    public TicTacToeGUI() {
+    public FrontGuiSingle() {
+       
         super("Tic Tac Toe");
         game = getinstance();
         buttons = new JButton[3][3];
@@ -117,6 +120,7 @@ public class TicTacToeGUI extends JFrame {
                 add(buttons[i][j]);
             }
         }
+        System.out.println(game.randomY());
         undobutton = Createundobutton();
         add(undobutton);
         snapshotbutton = Createsnapshotbutton();
@@ -179,6 +183,11 @@ public class TicTacToeGUI extends JFrame {
                 handleButtonClick(button, row, col);
                 System.out.println(game.getCurrentPlayer());
                 game.switchPlayer();
+                handleButtonClick2();
+                
+                
+                
+                
 
             }
         });
@@ -195,39 +204,65 @@ public class TicTacToeGUI extends JFrame {
             if (game.checkWinner() != null || game.checkDraw()) {
                 handleGameEnd();
             }
-        } else if (game.getCurrentPlayer() == 'o') {
-            button.setText("O");
-            button.setEnabled(false);
-            game.board.fillBoardO(row, col);
-            game.board.printBoard();
-            if (game.checkWinner() != null || game.checkDraw()) {
-                handleGameEnd();
-            }
         }
+    } 
+    
+    
+   private void handleButtonClick2() {
+    if (game.getCurrentPlayer() == 'o') {
+        int x, y;
+
+        do {
+            x = game.randomX();
+            y = game.randomY();
+        }  while (buttons[x][y].getText() != null && (buttons[x][y].getText().equals("X") || buttons[x][y].getText().equals("O")));
+
+
+        buttons[x][y].setText("O");
+        buttons[x][y].setEnabled(false);
+
+        game.board.fillBoardO(x, y);
+        game.board.printBoard();
+
+        if (game.checkWinner() != null || game.checkDraw()) {
+            handleGameEnd();
+        }
+
+        game.switchPlayer();
     }
+}
+
+
+    
+    
+    
+    
 
     private void handleGameEnd() {
         GameSymbol result = game.checkGameResult();
         if (result.getSymbol() == 'x' || result.getSymbol() == 'o') {
             JOptionPane.showMessageDialog(this, "Player " + result.getSymbol() + " wins!");
-            //resetGame();
+            resetGame();
         } else if (game.checkDraw()) {
             JOptionPane.showMessageDialog(this, "Draw");
-            //resetGame();
+            resetGame();
         }
     }
 
-    private void resetGame() {
-        int option = JOptionPane.showConfirmDialog(this, "Do you want to play again?", "Game Over", JOptionPane.YES_NO_OPTION);
-        if (option == JOptionPane.YES_OPTION) {
-            game.end();
-            game = getinstance();
+   private void resetGame() {
+    Object[] options = {"Undo", "Restart", "Exit"};
+   int choice = JOptionPane.showOptionDialog(this, "Game Over. What would you like to do?", "Game Over", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Undo", "Restart", "Exit"}, "Exit");
 
-            resetButtons();
-        } else {
-            System.exit(0);
-        }
+    if (choice == JOptionPane.YES_OPTION) {
+        undo();
+    } else if (choice == JOptionPane.NO_OPTION) {
+        game.end();
+        game = getinstance();
+        resetButtons();
+    } else {
+        System.exit(0);
     }
+}
 
     private void resetButtons() {
         for (int i = 0; i < 3; i++) {
@@ -239,8 +274,5 @@ public class TicTacToeGUI extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        new TicTacToeGUI();
 
-    }
 }
