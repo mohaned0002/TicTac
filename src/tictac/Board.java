@@ -12,7 +12,8 @@ import java.lang.reflect.Array;
  */
 public class Board {
 
-    public char[][] arr = new char[3][3];
+    public GameSymbol[][] arr = new GameSymbol[3][3];
+    FlyweightFactory f1=new FlyweightFactory();
 
     public Board() {
     }
@@ -29,7 +30,7 @@ public class Board {
     public void initializBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                arr[i][j] = '-';
+                arr[i][j] =f1.getChar('-');
             }
 
         }
@@ -37,16 +38,16 @@ public class Board {
     }
 
     public void fillBoardX(int x, int y) {
-        arr[x][y] = 'x';
+        arr[x][y] = f1.getChar('x');
 
     }
 
     public void fillBoardO(int x, int y) {
-        arr[x][y] = 'o';
+        arr[x][y] = f1.getChar('o');
 
     }
 
-    public char getSquare(int x, int y) {
+    public GameSymbol getSquare(int x, int y) {
         return arr[x][y];
 
     }
@@ -54,7 +55,7 @@ public class Board {
     public void printBoard() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                System.out.print(arr[i][j] + " | ");
+                System.out.print(arr[i][j].getSymbol() + " | ");
             }
             System.out.println("");
         }
