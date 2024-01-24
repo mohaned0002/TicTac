@@ -7,11 +7,11 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Entery extends JFrame {
+public class Entry extends JFrame {
 
     private BufferedImage backgroundImage;
 
-    public Entery() {
+    public Entry() {
         setTitle("Tic Tac Toe Game");
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -67,16 +67,16 @@ public class Entery extends JFrame {
         if (source == jButton1) {
             
             FrontGuiSingle f = new FrontGuiSingle();
-            Entery.super.setVisible(false);
+            Entry.super.setVisible(false);
          
         } else if (source == jButton2) {
                FrontGuiMulti f = new FrontGuiMulti();
-            Entery.super.setVisible(false);
+            Entry.super.setVisible(false);
         }
     }
 
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(() -> new Entery().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Entry().setVisible(true));
     }
 
     private JPanel jPanel1;
