@@ -230,9 +230,9 @@ public class FrontGuiMulti extends JFrame {
 //        }
 //    }
 
-    private void resetGame() {
-    Object[] options = {"Undo", "Restart", "Exit"};
-   int choice = JOptionPane.showOptionDialog(this, "Game Over. What would you like to do?", "Game Over", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Undo", "Restart", "Exit"}, "Exit");
+   private void resetGame() {
+    Object[] options = {"Undo", "Restart", "Snapshot", "Exit"};
+    int choice = JOptionPane.showOptionDialog(this, "Game Over. What would you like to do?", "Game Over", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, "Exit");
 
     if (choice == JOptionPane.YES_OPTION) {
         undo();
@@ -240,6 +240,10 @@ public class FrontGuiMulti extends JFrame {
         game.end();
         game = getinstance();
         resetButtons();
+    } else if (choice == options.length - 2) {  
+        restore();
+       
+
     } else {
         System.exit(0);
     }

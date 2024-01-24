@@ -246,20 +246,26 @@ public class FrontGuiSingle extends JFrame {
         }
     }
 
-    private void resetGame() {
-        Object[] options = {"Undo", "Restart", "Exit"};
-        int choice = JOptionPane.showOptionDialog(this, "Game Over. What would you like to do?", "Game Over", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Undo", "Restart", "Exit"}, "Exit");
 
-        if (choice == JOptionPane.YES_OPTION) {
-            undo();
-        } else if (choice == JOptionPane.NO_OPTION) {
-            game.end();
-            game = getinstance();
-            resetButtons();
-        } else {
-            System.exit(0);
-        }
+   private void resetGame() {
+    Object[] options = {"Undo", "Restart", "Snapshot", "Exit"};
+    int choice = JOptionPane.showOptionDialog(this, "Game Over. What would you like to do?", "Game Over", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, "Exit");
+
+    if (choice == JOptionPane.YES_OPTION) {
+        undo();
+    } else if (choice == JOptionPane.NO_OPTION) {
+        game.end();
+        game = getinstance();
+        resetButtons();
+    } else if (choice == options.length - 2) {  
+        restore();
+       
+
+    } else {
+        System.exit(0);
     }
+   }
+
 
     private void resetButtons() {
         for (int i = 0; i < 3; i++) {
