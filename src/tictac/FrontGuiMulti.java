@@ -205,17 +205,30 @@ public class FrontGuiMulti extends JFrame {
             }
         }
     }
-
-    private void handleGameEnd() {
-        GameSymbol result = game.checkGameResult();
-        if (result.getSymbol() == 'x' || result.getSymbol() == 'o') {
-            JOptionPane.showMessageDialog(this, "Player " + result.getSymbol() + " wins!");
-            resetGame();
-        } else if (game.checkDraw()) {
+   private void handleGameEnd() {
+        try {
+            GameSymbol result = game.checkGameResult();
+            if (result.getSymbol() == 'x' || result.getSymbol() == 'o') {
+                JOptionPane.showMessageDialog(this, "Player " + result.getSymbol() + " wins!");
+                resetGame();
+            }
+        } catch (NullPointerException e) {
+        }
+        if (game.checkDraw()) {
             JOptionPane.showMessageDialog(this, "Draw");
             resetGame();
         }
     }
+//    private void handleGameEnd() {
+//        GameSymbol result = game.checkGameResult();
+//        if (result.getSymbol() == 'x' || result.getSymbol() == 'o') {
+//            JOptionPane.showMessageDialog(this, "Player " + result.getSymbol() + " wins!");
+//            resetGame();
+//        } else if (game.checkDraw()) {
+//            JOptionPane.showMessageDialog(this, "Draw");
+//            resetGame();
+//        }
+//    }
 
    private void resetGame() {
     Object[] options = {"Undo", "Restart", "Snapshot", "Exit"};
@@ -223,6 +236,7 @@ public class FrontGuiMulti extends JFrame {
 
     if (choice == JOptionPane.YES_OPTION) {
         undo();
+        game.switchPlayer();
     } else if (choice == JOptionPane.NO_OPTION) {
         game.end();
         game = getinstance();

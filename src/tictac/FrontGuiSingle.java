@@ -26,6 +26,7 @@ public class FrontGuiSingle extends JFrame {
     private JButton snapshotbutton;
     private JButton snapshotrestbutton;
     Stack<Memento> stack = new Stack<Memento>();
+    Stack<Memento> stackc = new Stack<Memento>();
     Stack<Snapshot> spStack = new Stack<Snapshot>();
 
     public Memento CreateMemento(int x, int y) {
@@ -48,14 +49,17 @@ public class FrontGuiSingle extends JFrame {
     public void undo() {
 
         try {
-            Memento m = stack.pop();
+            Memento m;
+            m = stackc.pop();
+            setPreviousm(m);
+            m = stack.pop();
             setPreviousm(m);
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     String s = String.valueOf(m.getBoard().getSquare(i, j).getSymbol());
                     if (s.contains("-")) {
                         buttons[i][j].setText(null);
-                        
+
                     } else {
                         buttons[i][j].setText(s.toUpperCase());
                     }
@@ -75,7 +79,7 @@ public class FrontGuiSingle extends JFrame {
         game.gameStatues = s.getGameStatues();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (!(game.board.getSquare(i, j).getSymbol()=='X' ||game.board.getSquare(i, j).getSymbol()=='O')) {
+                if (!(game.board.getSquare(i, j).getSymbol() == 'X' || game.board.getSquare(i, j).getSymbol() == 'O')) {
                     buttons[i][j].setEnabled(true);
                 }
             }
@@ -92,7 +96,7 @@ public class FrontGuiSingle extends JFrame {
                     String s = String.valueOf(s1.getBoard().getSquare(i, j).getSymbol());
                     if (s.contains("-")) {
                         buttons[i][j].setText(null);
-                        
+
                     } else {
                         buttons[i][j].setText(s.toUpperCase());
                     }
@@ -106,7 +110,7 @@ public class FrontGuiSingle extends JFrame {
     }
 
     public FrontGuiSingle() {
-       
+
         super("Tic Tac Toe");
         game = getinstance();
         buttons = new JButton[3][3];
@@ -184,10 +188,6 @@ public class FrontGuiSingle extends JFrame {
                 System.out.println(game.getCurrentPlayer());
                 game.switchPlayer();
                 handleButtonClick2();
-                
-                
-                
-                
 
             }
         });
@@ -205,45 +205,44 @@ public class FrontGuiSingle extends JFrame {
                 handleGameEnd();
             }
         }
-    } 
-    
-    
-   private void handleButtonClick2() {
-    if (game.getCurrentPlayer() == 'o') {
-        int x, y;
-
-        do {
-            x = game.randomX();
-            y = game.randomY();
-        }  while (buttons[x][y].getText() != null && (buttons[x][y].getText().equals("X") || buttons[x][y].getText().equals("O")));
-
-
-        buttons[x][y].setText("O");
-        buttons[x][y].setEnabled(false);
-
-        game.board.fillBoardO(x, y);
-        game.board.printBoard();
-
-        if (game.checkWinner() != null || game.checkDraw()) {
-            handleGameEnd();
-        }
-
-        game.switchPlayer();
     }
-}
 
+    private void handleButtonClick2() {
+        if (game.getCurrentPlayer() == 'o') {
+            int x, y;
 
-    
-    
-    
-    
+            do {
+                x = game.randomX();
+                y = game.randomY();
+            } while (buttons[x][y].getText() != null && (buttons[x][y].getText().equals("X") || buttons[x][y].getText().equals("O")));
+            stackc.push(CreateMemento(x, y));
+
+            buttons[x][y].setText("O");
+            buttons[x][y].setEnabled(false);
+
+            game.board.fillBoardO(x, y);
+            game.board.printBoard();
+
+            if (game.checkWinner() != null || game.checkDraw()) {
+                handleGameEnd();
+            }
+
+            game.switchPlayer();
+        }
+    }
 
     private void handleGameEnd() {
-        GameSymbol result = game.checkGameResult();
-        if (result.getSymbol() == 'x' || result.getSymbol() == 'o') {
-            JOptionPane.showMessageDialog(this, "Player " + result.getSymbol() + " wins!");
-            resetGame();
-        } else if (game.checkDraw()) {
+        try {
+            GameSymbol result = game.checkGameResult();
+            if (result.getSymbol() == 'x' || result.getSymbol() == 'o') {
+                JOptionPane.showMessageDialog(this, "Player " + result.getSymbol() + " wins!");
+                resetGame();
+               
+
+            }
+        } catch (NullPointerException e) {
+        }
+        if (game.checkDraw()) {
             JOptionPane.showMessageDialog(this, "Draw");
             resetGame();
         }
@@ -254,20 +253,20 @@ public class FrontGuiSingle extends JFrame {
     int choice = JOptionPane.showOptionDialog(this, "Game Over. What would you like to do?", "Game Over", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, "Exit");
 
     if (choice == JOptionPane.YES_OPTION) {
-        undo();
+          game.switchPlayer();
+          undo();
+       game.switchPlayer();
     } else if (choice == JOptionPane.NO_OPTION) {
         game.end();
         game = getinstance();
         resetButtons();
     } else if (choice == options.length - 2) {  
         restore();
-       
+      
 
     } else {
         System.exit(0);
-    }
-}
-
+    }}
 
     private void resetButtons() {
         for (int i = 0; i < 3; i++) {
@@ -278,6 +277,4 @@ public class FrontGuiSingle extends JFrame {
             }
         }
     }
-
-
 }
